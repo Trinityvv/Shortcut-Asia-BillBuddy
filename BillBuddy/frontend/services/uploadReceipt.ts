@@ -4,7 +4,7 @@ export async function uploadReceipt(file: File) {
   formData.append("file", file)
 
   const response = await fetch(
-    "http://127.0.0.1:8000/upload",
+    "https://shortcut-asia-billbuddy.onrender.com/",
     {
       method: "POST",
       body: formData,
