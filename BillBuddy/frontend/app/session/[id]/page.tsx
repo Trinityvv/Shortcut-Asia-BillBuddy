@@ -41,20 +41,6 @@ export default function SessionPage() {
   const [nameInput, setNameInput] =
     useState("")
 
-  // Load saved username
-  useEffect(() => {
-
-    const savedName =
-      localStorage.getItem(
-        "billbuddy-user"
-      )
-
-    if (savedName) {
-      setUsername(savedName)
-    }
-
-  }, [])
-
   // Listen to Firebase
   useEffect(() => {
 
@@ -88,11 +74,6 @@ export default function SessionPage() {
   const handleJoin = () => {
 
     if (!nameInput.trim()) return
-
-    localStorage.setItem(
-      "billbuddy-user",
-      nameInput
-    )
 
     setUsername(nameInput)
   }
@@ -245,6 +226,24 @@ export default function SessionPage() {
 
   }, [items])
 
+  const copyInviteLink = async () => {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        window.location.href
+      )
+
+      alert("Invite link copied!")
+
+    } catch (error) {
+
+      console.error(error)
+
+      alert("Failed to copy link")
+    }
+  }
+
   // Join screen
   if (!username) {
 
@@ -361,17 +360,27 @@ export default function SessionPage() {
               text-zinc-400
               mt-2
             ">
-              Logged in as
-              {" "}
-              <span className="
-                text-white
-                font-semibold
-              ">
-                {username}
-              </span>
+              Collaboratively split
+              bills in realtime.
             </p>
 
           </div>
+
+          <button
+            onClick={copyInviteLink}
+            className="
+              bg-white
+              text-black
+              px-5
+              py-3
+              rounded-2xl
+              font-semibold
+              hover:bg-zinc-200
+              transition
+            "
+          >
+            Copy Invite Link
+          </button>
 
         </div>
 

@@ -2,14 +2,14 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { FileImage, Loader2, UploadCloud } from "lucide-react"
 
 import {
-  collection,
   addDoc,
+  collection,
 } from "firebase/firestore"
 
 import { db } from "@/lib/firebase"
-
 import { uploadReceipt } from "@/services/uploadReceipt"
 
 export default function UploadPage() {
@@ -49,14 +49,11 @@ export default function UploadPage() {
 
     try {
       setLoading(true)
-
       setError("")
 
-      // OCR Backend
       const data =
         await uploadReceipt(selectedFile)
 
-      // Firebase Session
       const docRef = await addDoc(
         collection(db, "sessions"),
         {
@@ -65,7 +62,6 @@ export default function UploadPage() {
         }
       )
 
-      // Redirect To Collaborative Session
       router.push(
         `/session/${docRef.id}`
       )
@@ -85,79 +81,113 @@ export default function UploadPage() {
   return (
     <div className="
       min-h-screen
-      bg-black
-      text-white
+      bg-[#080c09]
       px-6
-      py-12
+      py-10
+      text-zinc-100
     ">
       <div className="
-        max-w-2xl
         mx-auto
+        max-w-3xl
       ">
 
-        <h1 className="
-          text-5xl
-          font-bold
-          mb-3
+        <div className="
+          mb-6
+          max-w-2xl
         ">
-          Scan Your Receipt
-        </h1>
+          <div>
+            <p className="
+              mb-2
+              text-sm
+              font-medium
+              text-emerald-400
+            ">
+              Upload
+            </p>
 
-        <p className="
-          text-zinc-400
-          mb-10
-        ">
-          Upload a receipt and split
-          bills collaboratively.
-        </p>
+            <h1 className="
+              text-3xl
+              font-semibold
+              leading-tight
+              text-zinc-50
+            ">
+              Scan Your Receipt
+            </h1>
+
+            <p className="
+              mt-2
+              max-w-xl
+              text-sm
+              leading-6
+              text-zinc-500
+            ">
+              Choose a receipt photo and create a shared session for
+              your group.
+            </p>
+          </div>
+        </div>
 
         <div className="
-          bg-zinc-900
+          max-w-2xl
+          rounded-lg
           border
           border-zinc-800
-          rounded-3xl
-          p-6
+          bg-[#0d130f]
+          p-4
         ">
 
           <label
             htmlFor="receipt-upload"
             className="
               flex
+              cursor-pointer
               flex-col
               items-center
               justify-center
-              border-2
+              rounded-md
+              border
               border-dashed
               border-zinc-700
-              rounded-2xl
-              p-14
-              cursor-pointer
-              hover:border-white
+              bg-[#090d0a]
+              px-6
+              py-12
+              text-center
               transition
+              hover:border-emerald-600
+              hover:bg-[#0b100c]
             "
           >
 
             <div className="
-              text-6xl
               mb-4
+              flex
+              h-12
+              w-12
+              items-center
+              justify-center
+              rounded-md
+              border
+              border-zinc-800
+              bg-[#0d130f]
+              text-emerald-400
             ">
-              📸
+              <FileImage size={24} />
             </div>
 
             <p className="
-              text-2xl
+              mb-1
+              text-base
               font-semibold
-              mb-2
+              text-zinc-100
             ">
-              Upload Receipt
+              Drop in a receipt image
             </p>
 
             <p className="
-              text-zinc-400
               text-sm
+              text-zinc-500
             ">
-              Click here to choose
-              an image
+              Click to browse from your device
             </p>
 
             <input
@@ -171,10 +201,17 @@ export default function UploadPage() {
           </label>
 
           {previewUrl && (
-            <div className="mt-8">
+            <div className="
+              mt-6
+              border-t
+              border-zinc-800
+              pt-4
+            ">
 
               <p className="
                 mb-3
+                text-sm
+                font-medium
                 text-zinc-400
               ">
                 Receipt Preview
@@ -184,11 +221,11 @@ export default function UploadPage() {
                 src={previewUrl}
                 alt="Preview"
                 className="
+                  max-h-[500px]
                   w-full
-                  rounded-2xl
+                  rounded-md
                   border
                   border-zinc-800
-                  max-h-[500px]
                   object-cover
                 "
               />
@@ -198,8 +235,14 @@ export default function UploadPage() {
 
           {error && (
             <p className="
-              text-red-500
               mt-6
+              rounded-md
+              border
+              border-red-400/20
+              bg-red-950/30
+              px-4
+              py-3
+              text-red-200
             ">
               {error}
             </p>
@@ -209,22 +252,38 @@ export default function UploadPage() {
             onClick={handleUpload}
             disabled={loading}
             className="
-              mt-8
+              mt-6
+              flex
               w-full
-              bg-white
-              text-black
-              py-4
-              rounded-2xl
+              items-center
+              justify-center
+              gap-2
+              rounded-md
+              bg-emerald-500
+              py-3
+              text-sm
               font-semibold
-              text-lg
-              hover:bg-zinc-200
+              text-white
               transition
+              hover:bg-emerald-400
+              disabled:cursor-not-allowed
               disabled:opacity-50
             "
           >
-            {loading
-              ? "Processing Receipt..."
-              : "Scan Receipt"}
+            {loading ? (
+              <>
+                <Loader2
+                  size={20}
+                  className="animate-spin"
+                />
+                Processing Receipt...
+              </>
+            ) : (
+              <>
+                <UploadCloud size={20} />
+                Scan Receipt
+              </>
+            )}
           </button>
 
         </div>
