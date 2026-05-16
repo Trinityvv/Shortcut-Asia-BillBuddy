@@ -8,7 +8,7 @@ app = FastAPI()
 # CORS CONFIG
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://shortcut-asia-bill-buddy.vercel.app/"],
+    allow_origins=["https://shortcut-asia-bill-buddy.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
