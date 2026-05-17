@@ -44,7 +44,7 @@ Built with:
 cd frontend
 npm install
 npm run dev
-
+```
 ### Backend
 
 ```bash
@@ -53,7 +53,7 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
-
+```
 ### ENV Variables
 Create env.local in front end
 
@@ -64,3 +64,4 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
 NEXT_PUBLIC_FIREBASE_APP_ID=
+```
